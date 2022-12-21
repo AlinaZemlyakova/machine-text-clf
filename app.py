@@ -3,16 +3,24 @@ from analyzer import Analyzer
 
 from flask_mysqldb import MySQL
 
-app = Flask(__name__, template_folder='templates')
-
 analyzer = Analyzer('checkpoints/bert_model_0_1.pt')
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '1234567890'
-app.config['MYSQL_DB'] = 'flask'
- 
-mysql = MySQL(app)
+from flask import Flask
+from flaskext.mysql import MySQL
+
+app = Flask(__name__)
+mysql = MySQL()
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = '1234567890'
+app.config['MYSQL_DATABASE_DB'] = 'nlg_label'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+mysql.init_app(app)
+
+conn = mysql.connect()
+cur =conn.cursor()
+
+cur.execute(''' INSERT INTO nlg_label.main (text, label) VALUES('qqq222', 'correct222')''')
+conn.commit()
 
 @app.route('/')
 def tryit():
@@ -29,8 +37,6 @@ def predict_label():
     pred_label = analyzer.predict_label(text)
     print(pred_label)
     return render_template('tryit.html', context={'label': pred_label})
-
-cur = mysql.connection.cursor()
 
 def insert_into_db():
   text = request.form['text']

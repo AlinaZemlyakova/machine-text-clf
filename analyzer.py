@@ -10,7 +10,7 @@ class Analyzer():
     def __init__(self, weights_path):
         self.device = torch.device('cpu' if not torch.cuda.is_available() else 'cuda')
         self.model = BertCLF(hidden_neurons=512)
-        self.model.load_state_dict(torch.load(weights_path))
+        self.model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
         self.model.to(self.device).eval()
         self.tokenizer = BertTokenizer.from_pretrained('DeepPavlov/rubert-base-cased')
 
