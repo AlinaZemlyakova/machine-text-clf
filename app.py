@@ -33,15 +33,26 @@ def about():
 @app.route('/predict_label', methods=['POST'])
 def predict_label():
     text = request.form['text']
-    print(text)
+    print("predict_label: {}".format(text))
     pred_label = analyzer.predict_label(text)
-    print(pred_label)
+    print("pred_label: {}".format(pred_label))
     return render_template('tryit.html', context={'label': pred_label})
 
-def insert_into_db():
-  text = request.form['text']
-  cur.execute(''' INSERT INTO nlg_label ('text') VALUES(%s)''',(text))
-  mysql.connection.commit()
+@app.route('/insert_correct', methods=['POST'])
+def insert_correct():
+    text = request.form['text']
+    print("insert_correct: {}".format(text))
+    cur.execute(''' INSERT INTO nlg_label ('text') VALUES(%s)''',(text))
+    conn.commit()
+    return render_template('tryit.html', context={'label': pred_label})
+
+@app.route('/insert_incorrect', methods=['POST'])
+def insert_incorrect():
+    text = request.form['text']
+    print("insert_incorrect: {}".format(text))
+    cur.execute(''' INSERT INTO nlg_label ('text') VALUES(%s)''',(text))
+    conn.commit()
+    return render_template('tryit.html', context={'label': pred_label})
 
 def insert_label():
     if "correct" in request.form:

@@ -51,17 +51,19 @@
         <p class="lead">If you know the actual origin of the text, please help us improve our model by 
           adding your text with correct label to our database. Was the predicted label correct?
         </p>
-        <form>
-          <input type="submit" name="correct" value="Correct">
-          <input type="submit" name="incorrect" value="Close">
-        /form>
+        <form method="POST" action="insert_correct">
+          <input type="submit" value="Correct">
+        </form>
+        <form method="POST" action="insert_incorrect">
+          <input type="submit" value="Incorrect">
+        </form>
       
-          <!-- <button type="button" class="btn btn-success" onclick=
+          <button type="button" class="btn btn-success" onclick=
           'document.getElementById("gratitude").innerHTML="Thank you for your contribution!"'>Correct</button>
           <button type="button" class="btn btn-danger" onclick=
           'document.getElementById("gratitude").innerHTML="Thank you for your contribution!"'>Incorrect</button>
           <p></p>
-          <p class="lead" id="gratitude"></p> -->
+          <p class="lead" id="gratitude"></p>
       </div>
     </main>
     <script src="static/js/bootstrap.bundle.min.js"></script>
